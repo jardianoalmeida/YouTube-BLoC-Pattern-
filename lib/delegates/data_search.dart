@@ -32,12 +32,38 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    Future.delayed(Duration.zero).then((_)=>close(context, query));
     return Container();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container();
+    if(query.isEmpty)
+      return Container();
+    else
+      FutureBuilder<List>(
+        future: suggestions(query),
+        builder: (context, snapshot){
+          if(!snapshot.hasData){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+              itemBuilder: (context, index){
+                return ListTile(
+                  title: Text(snapshot.data[index]),
+                  leading: Icon(Icons.play_arrow),
+                  onTap: (){
+                    close(context, snapshot.data[index]);
+                  },
+                );
+              },
+              itemCount: snapshot.data.length,
+            );
+          }
+        },
+      );
   }
   Future<List> suggestions(String search) async {
 

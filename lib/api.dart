@@ -22,10 +22,11 @@ class Api {
       var decoded = json.decode(response.body);
 
       List<Video> videos = decoded["items"].map<Video>(
-          (map){
+              (map){
             return Video.fromJson(map);
           }
-      );
+      ).toList();
+
       return videos;
     } else {
       throw Exception("Failed to load videos");
