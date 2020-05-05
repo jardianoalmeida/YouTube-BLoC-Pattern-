@@ -41,7 +41,7 @@ class DataSearch extends SearchDelegate<String> {
     if(query.isEmpty)
       return Container();
     else
-      FutureBuilder<List>(
+      return FutureBuilder<List>(
         future: suggestions(query),
         builder: (context, snapshot){
           if(!snapshot.hasData){
